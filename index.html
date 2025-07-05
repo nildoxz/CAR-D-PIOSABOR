@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Online - SABOR AÇAÍTERIA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .bg-gradient-custom {
+            background-image: linear-gradient(to top right, #4f008a, #a100ff);
+        }
+        /* Custom Scrollbar for modals */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #c084fc; /* purple-400 */
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #a855f7; /* purple-500 */
+        }
+        /* Hide number input arrows for a cleaner look */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        /* Style for disabled checkboxes to make limits clear */
+        input[type="checkbox"]:disabled + span {
+            color: #9ca3af; /* gray-400 */
+            cursor: not-allowed;
+        }
+        /* Custom alert modal */
+        .alert-modal {
+            transition: opacity 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 sm:p-8 max-w-4xl">
+
+        <!-- Header Section -->
+        <header class="text-center mb-8 p-6 rounded-2xl bg-gradient-custom text-white shadow-lg">
+            <h1 class="text-5xl md:text-6xl font-black tracking-tight">SABOR AÇAÍTERIA</h1>
+            <p class="text-lg md:text-xl mt-2 opacity-90">Monte seu pedido online de forma fácil e rápida!</p>
+        </header>
+
+        <main class="space-y-8">
+
+            <!-- Products Section -->
+            <section id="tamanhos" class="bg-white p-6 rounded-2xl shadow-md">
+                <h2 class="text-3xl font-bold text-purple-800 mb-4 border-b-2 border-purple-200 pb-2">Escolha o Tamanho</h2>
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Products will be dynamically injected by JavaScript -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-10">
+            <p class="text-gray-600 mt-2">Siga-nos no Instagram: 
+                <a href="#" class="font-semibold text-purple-700 hover:underline">@sabor_acaiteria</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/5594992816973" target="_blank" class="fixed bottom-5 left-5 z-50">
+        <button class="bg-green-500 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition-transform transform hover:scale-110">
+            <i class="fab fa-whatsapp text-3xl"></i>
+        </button>
+    </a>
+
+    <!-- Floating Cart Button -->
+    <div id="cart-button" class="fixed bottom-5 right-5 z-50 hidden">
+        <button onclick="toggleCartModal()" class="bg-purple-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-purple-700 transition-transform transform hover:scale-110">
+            <i class="fas fa-shopping-cart text-2xl"></i>
+            <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">0</span>
+        </button>
+    </div>
+
+    <!-- Item Customization Modal -->
+    <div id="item-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 id="modal-title" class="text-2xl font-bold text-purple-800">Monte seu Açaí</h3>
+                <button onclick="closeItemModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-2xl"></i></button>
+            </div>
+            <div id="modal-body" class="p-6 space-y-6 overflow-y-auto modal-body">
+                <!-- Toppings will be dynamically injected by JavaScript -->
+            </div>
+            <div class="p-4 bg-gray-50 border-t flex justify-between items-center">
+                <div>
+                    <span class="text-lg font-medium text-gray-700">Total do Item:</span>
+                    <span id="modal-item-total" class="text-2xl font-bold text-purple-700 ml-2">R$ 0,00</span>
+                </div>
+                <button id="add-to-cart-btn" class="bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-all flex items-center gap-2">
+                    <i class="fas fa-cart-plus"></i> Adicionar ao Carrinho
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart and Checkout Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-purple-800">Seu Carrinho e Pedido</h3>
+                <button onclick="toggleCartModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-2xl"></i></button>
+            </div>
+            <div class="p-6 space-y-6 overflow-y-auto modal-body">
+                <div id="cart-items-container">
+                    <!-- Cart items will be dynamically injected here -->
+                </div>
+                
+                <div id="cart-summary-details" class="pt-4 mt-4 border-t space-y-2 hidden">
+                     <div class="flex justify-between text-gray-700">
+                         <span>Subtotal</span>
+                         <span id="cart-subtotal">R$ 0,00</span>
+                     </div>
+                     <div class="flex justify-between text-gray-700">
+                         <span>Taxa de Entrega</span>
+                         <span id="cart-delivery-fee">R$ 0,00</span>
+                     </div>
+                </div>
+
+                <div id="checkout-form" class="space-y-4 pt-6 border-t hidden">
+                    <h4 class="text-xl font-bold text-gray-800">Informações para Entrega</h4>
+                    <div>
+                        <label for="customer-name" class="block text-sm font-medium text-gray-700">Seu Nome</label>
+                        <input type="text" id="customer-name" class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 text-base" required>
+                    </div>
+                    <div>
+                        <label for="customer-address" class="block text-sm font-medium text-gray-700">Endereço Completo (Rua, Número, Bairro, Complemento)</label>
+                        <input type="text" id="customer-address" class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 text-base" required>
+                    </div>
+                     <div>
+                        <label for="payment-method" class="block text-sm font-medium text-gray-700">Forma de Pagamento</label>
+                        <select id="payment-method" class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 text-base">
+                            <option>Pix</option>
+                            <option>Cartão de Crédito (na entrega)</option>
+                            <option>Cartão de Débito (na entrega)</option>
+                            <option>Dinheiro</option>
+                        </select>
+                    </div>
+                     <div>
+                        <label for="observations" class="block text-sm font-medium text-gray-700">Observações</label>
+                        <textarea id="observations" rows="3" class="mt-1 block w-full border-2 border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500 p-3 text-base" placeholder="Ex: Troco para R$50, sem cebola, etc."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-50 border-t flex justify-between items-center">
+                 <div>
+                    <span class="text-lg font-medium text-gray-700">Total do Pedido:</span>
+                    <span id="cart-total" class="text-2xl font-bold text-purple-700 ml-2">R$ 0,00</span>
+                </div>
+                <button onclick="finalizeOrder()" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-all flex items-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Finalizar Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg text-center p-8">
+            <i class="fas fa-check-circle text-green-500 text-6xl mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">Pedido Recebido!</h3>
+            <p class="text-gray-600 mb-6">Seu resumo está pronto. Clique no botão para enviar via WhatsApp e concluir seu pedido!</p>
+            <div id="order-summary" class="text-left bg-gray-100 p-4 rounded-lg mb-6 max-h-60 overflow-y-auto modal-body">
+                <!-- Order summary will be injected here -->
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                 <button onclick="sendOrderViaWhatsApp()" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-600 transition-all flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Enviar Pedido
+                </button>
+                <button onclick="closeConfirmationModal()" class="w-full bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-400 transition-all">Fechar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Alert Modal -->
+    <div id="alert-modal" class="alert-modal fixed inset-0 bg-black bg-opacity-50 z-[60] hidden items-center justify-center p-4 opacity-0">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm text-center p-6 transform scale-95 transition-transform">
+            <div id="alert-icon" class="mx-auto mb-4"></div>
+            <h3 id="alert-title" class="text-xl font-bold text-gray-800 mb-2">Atenção!</h3>
+            <p id="alert-message" class="text-gray-600 mb-6">Mensagem de alerta.</p>
+            <button onclick="closeAlertModal()" class="w-full bg-purple-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-purple-700 transition-all">OK</button>
+        </div>
+    </div>
+
+
+<script>
+// --- DATABASE (Products and Toppings) ---
+const products = [
+    { id: 1, name: 'Copo 300ml', price: 14.00 },
+    { id: 2, name: 'Copo 400ml', price: 17.00 },
+    { id: 3, name: 'Copo 500ml', price: 20.00 },
+    { id: 4, name: 'Barca M', price: 55.00 },
+];
+
+const toppings = {
+    free: {
+        title: '🍓 Frutas e Cremes (Grátis, escolha até 3)',
+        limit: 3,
+        items: ['Sorvete', 'Banana', 'Morango', 'Manga', 'Kiwi', 'Uva', 'Abacaxi', 'Creme de Leite Ninho', 'Creme de Cupuaçu', 'Mousse de Maracujá', 'Creme de Avelã']
+    },
+    grains: {
+        title: '🌾 Grãos e Cereais (Grátis, escolha até 2)',
+        limit: 2,
+        items: ['Granola Tradicional', 'Granola de Chocolate', 'Aveia', 'Flocos de Arroz', 'Paçoca', 'Leite em Pó', 'Amendoim', 'Coco Ralado']
+    },
+    caldas: {
+        title: '🍯 Caldas (Grátis, escolha 1)',
+        limit: 1,
+        items: ['Leite Condensado', 'Calda de Chocolate', 'Calda de Morango', 'Calda de Caramelo', 'Mel']
+    },
+    paid_tier2: {
+        title: '🍫 Doces e Chocolates (+ R$ 3,00 cada)',
+        price: 3.00,
+        items: ['Gotas de Chocolate', 'Confetes', 'Bis Picado', 'Ouro Branco', 'Sonho de Valsa', 'Jujubas']
+    },
+    paid_tier3: {
+        title: '⭐ Mais alguma coisa? (+ R$ 4,00 cada)',
+        price: 4.00,
+        items: [
+            'Castanha de Caju',
+            'Sorvete', 'Banana', 'Morango', 'Manga', 'Kiwi', 'Uva', 'Abacaxi',
+            'Creme de Leite Ninho', 'Creme de Cupuaçu', 'Mousse de Maracujá', 'Creme de Avelã'
+        ]
+    }
+};
+
+// --- CONFIGURATION ---
+const DELIVERY_FEE = 6.00;
+
+// --- APPLICATION STATE ---
+let cart = [];
+let currentItem = null;
+let whatsAppMessage = '';
+const CART_STORAGE_KEY = 'saborAcaiteriaCart';
+const CUSTOMER_INFO_STORAGE_KEY = 'saborAcaiteriaCustomerInfo';
+
+// --- DOM ELEMENT SELECTORS ---
+const productList = document.getElementById('product-list');
+const itemModal = document.getElementById('item-modal');
+const cartModal = document.getElementById('cart-modal');
+const confirmationModal = document.getElementById('confirmation-modal');
+const cartButton = document.getElementById('cart-button');
+const alertModal = document.getElementById('alert-modal');
+const customerNameInput = document.getElementById('customer-name');
+const customerAddressInput = document.getElementById('customer-address');
+
+// --- HELPER FUNCTIONS ---
+function formatCurrency(value) {
+    return `R$ ${value.toFixed(2).replace('.', ',')}`;
+}
+
+// --- LOCAL STORAGE FUNCTIONS ---
+function saveCart() {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function loadCart() {
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+    }
+}
+
+function saveCustomerInfo() {
+    const info = {
+        name: customerNameInput.value,
+        address: customerAddressInput.value
+    };
+    localStorage.setItem(CUSTOMER_INFO_STORAGE_KEY, JSON.stringify(info));
+}
+
+function loadCustomerInfo() {
+    const savedInfo = localStorage.getItem(CUSTOMER_INFO_STORAGE_KEY);
+    if (savedInfo) {
+        const info = JSON.parse(savedInfo);
+        customerNameInput.value = info.name || '';
+        customerAddressInput.value = info.address || '';
+    }
+}
+
+
+// --- CUSTOM ALERT FUNCTION ---
+function showAlert(message, title = 'Atenção!', isError = false) {
+    document.getElementById('alert-message').textContent = message;
+    document.getElementById('alert-title').textContent = title;
+    const iconContainer = document.getElementById('alert-icon');
+    if (isError) {
+        iconContainer.innerHTML = '<i class="fas fa-exclamation-triangle text-red-500 text-5xl"></i>';
+    } else {
+        iconContainer.innerHTML = '<i class="fas fa-info-circle text-blue-500 text-5xl"></i>';
+    }
+    alertModal.classList.remove('hidden');
+    setTimeout(() => {
+        alertModal.classList.remove('opacity-0');
+        alertModal.querySelector('div > div').classList.remove('scale-95');
+    }, 10);
+}
+
+function closeAlertModal() {
+    alertModal.classList.add('opacity-0');
+    alertModal.querySelector('div > div').classList.add('scale-95');
+    setTimeout(() => {
+        alertModal.classList.add('hidden');
+    }, 300);
+}
+
+
+// --- RENDER FUNCTIONS (Updating the UI) ---
+function renderProducts() {
+    productList.innerHTML = '';
+    products.forEach(product => {
+        const productCard = `
+            <div class="border border-gray-200 rounded-xl p-4 text-center transition-all hover:shadow-lg hover:border-purple-500 cursor-pointer flex flex-col justify-between" onclick="openItemModal(${product.id})">
+                <div>
+                    <h3 class="font-bold text-xl text-gray-800">${product.name}</h3>
+                    <p class="text-2xl font-semibold text-purple-700 mt-2">${formatCurrency(product.price)}</p>
+                </div>
+                <button class="mt-4 bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition-all w-full">Montar</button>
+            </div>
+        `;
+        productList.innerHTML += productCard;
+    });
+}
+
+function renderCart() {
+    const cartContainer = document.getElementById('cart-items-container');
+    const cartTotalEl = document.getElementById('cart-total');
+    const cartCountEl = document.getElementById('cart-count');
+    const checkoutForm = document.getElementById('checkout-form');
+    const summaryDetails = document.getElementById('cart-summary-details');
+
+    if (cart.length === 0) {
+        cartContainer.innerHTML = '<p class="text-gray-500 text-center">Seu carrinho está vazio.</p>';
+        checkoutForm.classList.add('hidden');
+        summaryDetails.classList.add('hidden');
+    } else {
+        checkoutForm.classList.remove('hidden');
+        summaryDetails.classList.remove('hidden');
+        cartContainer.innerHTML = cart.map((item, index) => `
+            <div class="flex items-start justify-between p-4 border-b">
+                <div>
+                    <p class="font-bold text-lg text-gray-800">${item.name} (x${item.quantity})</p>
+                    <div class="text-sm text-gray-600 pl-2 mt-1">
+                        ${item.toppings.length > 0 ? item.toppings.map(t => `<span>- ${t.name} ${t.price > 0 ? `(+ ${formatCurrency(t.price)})` : ''}</span>`).join('<br>') : '<span>- Açaí puro</span>'}
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold text-lg text-purple-700">${formatCurrency(item.price * item.quantity)}</p>
+                    <div class="flex items-center gap-2 mt-2">
+                        <button onclick="updateQuantity(${index}, -1)" class="bg-gray-200 w-7 h-7 rounded-full font-bold text-lg flex items-center justify-center">-</button>
+                        <span class="font-bold w-5 text-center">${item.quantity}</span>
+                        <button onclick="updateQuantity(${index}, 1)" class="bg-gray-200 w-7 h-7 rounded-full font-bold text-lg flex items-center justify-center">+</button>
+                        <button onclick="removeFromCart(${index})" class="text-red-500 hover:text-red-700 ml-2"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const finalTotal = subtotal > 0 ? subtotal + DELIVERY_FEE : 0;
+
+    document.getElementById('cart-subtotal').textContent = formatCurrency(subtotal);
+    document.getElementById('cart-delivery-fee').textContent = formatCurrency(subtotal > 0 ? DELIVERY_FEE : 0);
+    cartTotalEl.textContent = formatCurrency(finalTotal);
+    cartCountEl.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+}
+
+// --- MODAL LOGIC ---
+function openItemModal(productId) {
+    const product = products.find(p => p.id === productId);
+    currentItem = {
+        id: productId,
+        name: product.name,
+        basePrice: product.price,
+        price: product.price,
+        quantity: 1,
+        toppings: [],
+    };
+
+    document.getElementById('modal-title').textContent = `Monte seu ${product.name}`;
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = ''; // Clear previous content
+
+    // Add the warning message about toppings
+    const warningNote = `
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md" role="alert">
+            <div class="flex">
+                <div class="py-1"><i class="fas fa-info-circle mr-3"></i></div>
+                <div>
+                    <p class="font-bold">Atenção!</p>
+                    <p class="text-sm">Escolha seus adicionais com carinho. Nossos copos têm espaço limitado e talvez não seja possível incluir todos os itens selecionados.</p>
+                </div>
+            </div>
+        </div>
+    `;
+    modalBody.innerHTML += warningNote;
+
+
+    Object.entries(toppings).forEach(([key, category]) => {
+        const section = document.createElement('div');
+        
+        let itemsHTML = category.items.map(item => `
+            <label class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
+                <input type="checkbox" class="h-5 w-5 rounded border-gray-300 text-purple-600 focus:ring-purple-500" name="${key}" value="${item}" data-price="${category.price || 0}">
+                <span>${item}</span>
+            </label>
+        `).join('');
+
+        section.innerHTML = `
+            <h4 class="text-lg font-bold text-gray-700 mb-2 pb-1 border-b">${category.title}</h4>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">${itemsHTML}</div>
+        `;
+        modalBody.appendChild(section);
+    });
+    
+    modalBody.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateModalItemTotal);
+    });
+
+    updateModalItemTotal();
+    itemModal.classList.remove('hidden');
+    itemModal.classList.add('flex');
+}
+
+function closeItemModal() {
+    itemModal.classList.add('hidden');
+    itemModal.classList.remove('flex');
+    currentItem = null;
+}
+
+function updateModalItemTotal() {
+    let totalFromToppings = 0;
+    const currentToppingsList = [];
+
+    Object.entries(toppings).forEach(([key, category]) => {
+        const checkboxes = document.querySelectorAll(`#modal-body input[name="${key}"]`);
+        const checkedCheckboxes = document.querySelectorAll(`#modal-body input[name="${key}"]:checked`);
+
+        // Enforce limits if the category has one
+        if (category.limit) {
+            if (checkedCheckboxes.length >= category.limit) {
+                checkboxes.forEach(cb => {
+                    if (!cb.checked) cb.disabled = true;
+                });
+            } else {
+                checkboxes.forEach(cb => {
+                    cb.disabled = false;
+                });
+            }
+        }
+        
+        // Add checked items to the list and calculate price
+        checkedCheckboxes.forEach(checkbox => {
+            const price = parseFloat(checkbox.dataset.price);
+            if (price > 0) {
+                totalFromToppings += price;
+            }
+            currentToppingsList.push({ name: checkbox.value, price: price });
+        });
+    });
+    
+    currentItem.price = currentItem.basePrice + totalFromToppings;
+    currentItem.toppings = currentToppingsList.sort((a, b) => a.price - b.price);
+    document.getElementById('modal-item-total').textContent = formatCurrency(currentItem.price);
+}
+
+function toggleCartModal() {
+    renderCart();
+    cartModal.classList.toggle('hidden');
+    cartModal.classList.toggle('flex');
+}
+
+function closeConfirmationModal() {
+    confirmationModal.classList.add('hidden');
+    confirmationModal.classList.remove('flex');
+}
+
+// --- CART LOGIC ---
+document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+    // Check if an identical item already exists in the cart
+    const existingItemIndex = cart.findIndex(item => {
+        if (item.id !== currentItem.id || item.toppings.length !== currentItem.toppings.length) return false;
+        
+        // Compare toppings sets to see if they are identical regardless of order
+        const currentToppingsSet = new Set(currentItem.toppings.map(t => t.name));
+        const existingToppingsSet = new Set(item.toppings.map(t => t.name));
+        if (currentToppingsSet.size !== existingToppingsSet.size) return false;
+        
+        return [...currentToppingsSet].every(t => existingToppingsSet.has(t));
+    });
+
+    if (existingItemIndex > -1) {
+        // If it exists, just increment the quantity
+        cart[existingItemIndex].quantity++;
+    } else {
+        // Otherwise, add the new item configuration to the cart
+        cart.push({ ...currentItem });
+    }
+    
+    saveCart();
+    closeItemModal();
+    renderCart();
+    updateCartIcon();
+});
+
+function updateQuantity(index, change) {
+    if (cart[index].quantity + change > 0) {
+        cart[index].quantity += change;
+    } else {
+        // If quantity becomes 0, remove the item
+        removeFromCart(index);
+        return; // Exit because removeFromCart already updates the UI
+    }
+    saveCart();
+    renderCart();
+    updateCartIcon();
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+    renderCart();
+    updateCartIcon();
+}
+
+function updateCartIcon() {
+    const cartCountEl = document.getElementById('cart-count');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCountEl.textContent = totalItems;
+    if (totalItems > 0) {
+        cartButton.classList.remove('hidden');
+    } else {
+         cartButton.classList.add('hidden');
+         // Also close the cart modal if it's open and becomes empty
+         if (cartModal.classList.contains('flex')) {
+             toggleCartModal();
+         }
+    }
+}
+
+// --- ORDER FINALIZATION LOGIC ---
+function finalizeOrder() {
+    if (cart.length === 0) {
+        showAlert('Seu carrinho está vazio!', 'Carrinho Vazio', true);
+        return;
+    }
+    const name = customerNameInput.value.trim();
+    const address = customerAddressInput.value.trim();
+    const payment = document.getElementById('payment-method').value;
+    const obs = document.getElementById('observations').value.trim();
+
+    if (!name || !address) {
+        showAlert('Por favor, preencha seu Nome e Endereço para continuar.', 'Dados Incompletos', true);
+        return;
+    }
+
+    // Build the order summary text for WhatsApp
+    let summary = `*NOVO PEDIDO - SABOR AÇAÍTERIA*\n\n`;
+    summary += `*Cliente:* ${name}\n`;
+    summary += `*Endereço:* ${address}\n\n`;
+    summary += `*ITENS DO PEDIDO:*\n`;
+    summary += `------------------------\n`;
+
+    cart.forEach(item => {
+        summary += `*${item.quantity}x ${item.name}*\n`;
+        if (item.toppings.length > 0) {
+            item.toppings.forEach(t => {
+                summary += `  - ${t.name}\n`;
+            });
+        } else {
+            summary += `  - Açaí puro\n`;
+        }
+        summary += `Subtotal: ${formatCurrency(item.price * item.quantity)}\n`;
+        summary += `------------------------\n`;
+    });
+
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const finalTotal = subtotal + DELIVERY_FEE;
+
+    summary += `\n*Subtotal dos Itens: ${formatCurrency(subtotal)}*\n`;
+    summary += `*Taxa de Entrega: ${formatCurrency(DELIVERY_FEE)}*\n`;
+    summary += `*TOTAL DO PEDIDO: ${formatCurrency(finalTotal)}*\n`;
+    summary += `*Forma de Pagamento:* ${payment}\n`;
+    if (obs) {
+        summary += `*Observações:* ${obs}\n`;
+    }
+
+    // Store the URL-encoded message for WhatsApp
+    whatsAppMessage = encodeURIComponent(summary);
+    
+    // Display a formatted version in the confirmation modal
+    document.getElementById('order-summary').innerHTML = summary.replace(/\n/g, '<br>').replace(/\*(.*?)\*/g, '<strong>$1</strong>');
+    
+    toggleCartModal(); // Close the cart
+    confirmationModal.classList.remove('hidden');
+    confirmationModal.classList.add('flex');
+}
+
+function sendOrderViaWhatsApp() {
+    // --- NÚMERO DE WHATSAPP CONFIGURADO ---
+    // Formato: 55 (Brasil) + DDD + Número
+    const yourNumber = '5594992816973'; 
+    
+    const url = `https://wa.me/${yourNumber}?text=${whatsAppMessage}`;
+    window.open(url, '_blank');
+    
+    // Reset the application state after sending
+    cart = [];
+    saveCart(); // Persist the empty cart
+    localStorage.removeItem(CUSTOMER_INFO_STORAGE_KEY); // Clear customer info
+
+    closeConfirmationModal();
+    renderCart();
+    updateCartIcon();
+    // Reset form fields
+    document.getElementById('checkout-form').reset();
+    customerNameInput.value = '';
+    customerAddressInput.value = '';
+}
+
+
+// --- INITIALIZATION ---
+function initializeApp() {
+    loadCart();
+    loadCustomerInfo();
+    renderProducts();
+    renderCart();
+    updateCartIcon();
+
+    // Add event listeners to save customer info as they type
+    customerNameInput.addEventListener('input', saveCustomerInfo);
+    customerAddressInput.addEventListener('input', saveCustomerInfo);
+}
+
+// This function runs when the page is fully loaded
+window.onload = initializeApp;
+
+</script>
+</body>
+</html>
+
