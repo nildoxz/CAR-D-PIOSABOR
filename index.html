@@ -65,6 +65,8 @@
         </header>
 
         <div id="store-status-banner" class="hidden"></div>
+        <div id="delivery-time-banner" class="hidden"></div>
+
 
         <main class="space-y-8">
             <section id="tamanhos" class="bg-gray-800 p-6 rounded-2xl shadow-md">
@@ -303,6 +305,8 @@
     let currentItem = null;
     let whatsAppMessage = '';
     let isStoreOpen = false;
+    let isDeliveryTime = false; // New variable to track delivery time
+    const DELIVERY_START_HOUR = 18; // 6 PM
     let adminSettings = {};
     let products = [];
     let toppings = {};
@@ -310,7 +314,7 @@
     const defaultAdminSettings = {
         storeStatus: 'auto',
         deliveryMode: 'both',
-        openingTime: '14:30',
+        openingTime: '15:15', // Updated opening time
         closingTime: '22:15',
         openDays: [1, 2, 3, 4, 5, 6], // Mon-Sat
         whatsappNumber: '5594991623576',
@@ -382,6 +386,7 @@
     const passwordModal = document.getElementById('password-modal');
     const adminPasswordInput = document.getElementById('admin-password-input');
     const confirmActionModal = document.getElementById('confirm-action-modal');
+    const deliveryTimeBanner = document.getElementById('delivery-time-banner'); // New banner element
 
     // --- HELPER FUNCTIONS ---
     function formatCurrency(value) {
@@ -470,25 +475,29 @@
         const indicator = document.getElementById('store-status-indicator');
         const banner = document.getElementById('store-status-banner');
         const finalizeBtn = document.querySelector('button[onclick="finalizeOrder()"]');
+        const now = new Date();
+        const currentHour = now.getHours();
+        const currentDay = now.getDay(); // Sunday = 0, Monday = 1, etc.
 
+        // Check if store is open based on admin settings
         if (adminSettings.storeStatus === 'open') {
             isStoreOpen = true;
         } else if (adminSettings.storeStatus === 'closed') {
             isStoreOpen = false;
         } else { // 'auto'
-            const now = new Date();
-            const currentDay = now.getDay(); // Sunday = 0, Monday = 1, etc.
             const isTodayOpenDay = adminSettings.openDays.includes(currentDay);
-
             if (!isTodayOpenDay) {
                 isStoreOpen = false;
             } else {
                 const openTime = parseInt(adminSettings.openingTime.replace(':', ''));
                 const closeTime = parseInt(adminSettings.closingTime.replace(':', ''));
-                const currentTime = now.getHours() * 100 + now.getMinutes();
+                const currentTime = currentHour * 100 + now.getMinutes();
                 isStoreOpen = (currentTime >= openTime && currentTime <= closeTime);
             }
         }
+
+        // Check delivery time
+        isDeliveryTime = currentHour >= DELIVERY_START_HOUR;
 
         if (isStoreOpen) {
             indicator.textContent = 'Aberto';
@@ -522,6 +531,21 @@
                 finalizeBtn.classList.add('opacity-50', 'cursor-not-allowed');
             }
         }
+
+        // Update delivery time banner
+        if (!isDeliveryTime && isStoreOpen) { // Only show if store is open but delivery isn't active yet
+            deliveryTimeBanner.innerHTML = `
+                <div class="bg-blue-900/50 border-l-4 border-blue-500 text-blue-300 p-4 rounded-md mb-8 text-center" role="alert">
+                    <p class="font-bold text-lg">Entregas começam a partir das ${DELIVERY_START_HOUR}:00h!</p>
+                    <p class="text-sm">Você ainda pode fazer pedidos para retirar na loja.</p>
+                </div>
+            `;
+            deliveryTimeBanner.classList.remove('hidden');
+        } else {
+            deliveryTimeBanner.classList.add('hidden');
+            deliveryTimeBanner.innerHTML = '';
+        }
+
         renderStoreHoursDisplay();
     }
 
@@ -605,11 +629,20 @@
         const takeoutRadio = takeoutLabel.querySelector('input');
         const deliveryOptionsContainer = document.getElementById('delivery-options');
 
-        deliveryLabel.classList.add('hidden');
+        // Reset states
+        deliveryLabel.classList.add('hidden', 'opacity-100', 'cursor-pointer');
+        deliveryRadio.disabled = false;
+        deliveryLabel.querySelector('.radio-title').textContent = 'Delivery (Entrega)';
+        deliveryLabel.querySelector('.text-sm').textContent = '20-60 min';
+
         takeoutLabel.classList.add('hidden');
+        takeoutRadio.disabled = false;
+        takeoutLabel.querySelector('.radio-title').textContent = 'Retirar na Loja';
+        takeoutLabel.querySelector('.text-sm').textContent = '20-30 min';
 
         let activeOptions = 0;
 
+        // Apply admin settings for delivery mode
         if (adminSettings.deliveryMode === 'both' || adminSettings.deliveryMode === 'delivery') {
             deliveryLabel.classList.remove('hidden');
             activeOptions++;
@@ -619,18 +652,31 @@
             activeOptions++;
         }
 
+        // Apply delivery time restriction
+        if (!isDeliveryTime && (adminSettings.deliveryMode === 'both' || adminSettings.deliveryMode === 'delivery')) {
+            deliveryRadio.disabled = true;
+            deliveryLabel.classList.add('opacity-50', 'cursor-not-allowed');
+            deliveryLabel.querySelector('.radio-title').textContent = 'Delivery (Indisponível)';
+            deliveryLabel.querySelector('.text-sm').textContent = `Disponível a partir das ${DELIVERY_START_HOUR}:00h`;
+        }
+
         if (activeOptions === 0) {
             deliveryOptionsContainer.classList.add('hidden');
         } else {
             deliveryOptionsContainer.classList.remove('hidden');
         }
 
+        // Ensure a valid option is selected if the previously selected one is now disabled
         const currentSelected = document.querySelector('input[name="delivery_option"]:checked');
-        if (!currentSelected || currentSelected.closest('label').classList.contains('hidden')) {
-            if (!deliveryLabel.classList.contains('hidden')) {
+        if (!currentSelected || currentSelected.closest('label').classList.contains('hidden') || currentSelected.disabled) {
+            if (!deliveryLabel.classList.contains('hidden') && !deliveryRadio.disabled) {
                 deliveryRadio.checked = true;
-            } else if (!takeoutLabel.classList.contains('hidden')) {
+            } else if (!takeoutLabel.classList.contains('hidden') && !takeoutRadio.disabled) {
                 takeoutRadio.checked = true;
+            } else {
+                // If no options are available or selectable, ensure none are checked
+                deliveryRadio.checked = false;
+                takeoutRadio.checked = false;
             }
         }
         
@@ -827,6 +873,12 @@
 
         if (!name) {
             showAlert('Por favor, preencha seu Nome para continuar.', 'Dados Incompletos', true);
+            return;
+        }
+
+        // New check for delivery time
+        if (deliveryOption === 'delivery' && !isDeliveryTime) {
+            showAlert(`As entregas só começam a partir das ${DELIVERY_START_HOUR}:00h. Por favor, escolha "Retirar na Loja" ou aguarde.`, 'Horário de Entrega', true);
             return;
         }
         
@@ -1207,3 +1259,4 @@
     </script>
 </body>
 </html>
+
