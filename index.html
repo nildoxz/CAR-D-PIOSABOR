@@ -439,10 +439,10 @@
                     </button>
                 </div>
                 <div class="mt-4 flex justify-center gap-4">
-                    <button id="move-left-btn" class="bg-gray-200 text-gray-800 font-bold py-6 px-16 rounded-lg hover:bg-gray-300 transition-all">
+                    <button id="move-left-btn" class="instagram-gradient text-white font-bold py-6 px-16 rounded-lg instagram-gradient-hover">
                         <i class="fas fa-arrow-left text-3xl"></i>
                     </button>
-                    <button id="move-right-btn" class="bg-gray-200 text-gray-800 font-bold py-6 px-16 rounded-lg hover:bg-gray-300 transition-all">
+                    <button id="move-right-btn" class="instagram-gradient text-white font-bold py-6 px-16 rounded-lg instagram-gradient-hover">
                         <i class="fas fa-arrow-right text-3xl"></i>
                     </button>
                 </div>
@@ -2002,8 +2002,8 @@
                             this.fallingItems.forEach(fallingItem => {
                                 fallingItem.speed *= 1.15;
                             });
-                            app.elements.gameMessage.textContent = `Velocidade Aumentada! (x${this.currentSpeedMultiplier.toFixed(2)})`;
-                            setTimeout(() => app.elements.gameMessage.textContent = '', 1500);
+                            // Removed: app.elements.gameMessage.textContent = `Velocidade Aumentada! (x${this.currentSpeedMultiplier.toFixed(2)})`;
+                            // Removed: setTimeout(() => app.elements.gameMessage.textContent = '', 1500);
                         }
 
                         // Verifica e concede pontos de desconto (apenas no modo normal)
@@ -2014,7 +2014,7 @@
                                     app.saveDiscountPoints();
                                     app.elements.gameDiscountMessage.textContent = `PARABÉNS! Você ganhou ${tier.points} pontos de desconto de ${tier.percentage}%!`;
                                     app.elements.gameDiscountMessage.classList.remove('hidden');
-                                    setTimeout(() => app.elements.gameDiscountMessage.classList.add('hidden'), 3000);
+                                    // Removed: setTimeout(() => app.elements.gameDiscountMessage.classList.add('hidden'), 3000); // This line makes the message disappear
                                     this.discountAwardedScores.push(tier.points);
                                 }
                             });
