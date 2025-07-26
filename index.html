@@ -86,7 +86,7 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- Header Section -->
+    <!--Header Section-->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-sm p-4 sm:p-6 rounded-b-2xl shadow-lg border-b border-gray-200">
         <div class="text-center">
             <h1 class="text-4xl md:text-5xl font-black tracking-tight text-orange-700">SABOR AÇAÍTERIA</h1>
@@ -97,30 +97,30 @@
         </div>
     </header>
 
-    <!-- Game Banner Section -->
+    <!--Game Banner Section-->
     <div class="bg-red-600 p-4 text-center shadow-md">
         <a href="#" onclick="app.game.openGameModal(event)" class="inline-block bg-white text-red-700 font-bold py-3 px-8 rounded-full hover:bg-red-100 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg">
-            <i class="fas fa-gamepad mr-2"></i> Clique aqui para jogar Pegue o Açaí!
+            <i class="fas fa-gamepad mr-2"></i> Jogue Pegue o Açaí e Ganhe Descontos!
         </a>
     </div>
 
     <div class="container mx-auto p-4 sm:p-8 max-w-4xl">
 
-        <!-- Store Status and Delivery Time Banners -->
+        <!--Store Status and Delivery Time Banners-->
         <div id="store-status-banner" class="hidden"></div>
         <div id="delivery-time-banner" class="hidden"></div>
 
-        <!-- Main Content Area - Product List -->
+        <!--Main Content Area - Product List-->
         <main class="space-y-8">
             <section id="tamanhos" class="bg-white p-6 rounded-2xl shadow-md">
                 <h2 class="text-3xl font-bold text-red-600 mb-4 border-b-2 border-gray-200 pb-2">Escolha o Tamanho</h2>
                 <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <!-- Product cards will be rendered here by JavaScript -->
+                    <!--Product cards will be rendered here by JavaScript-->
                 </div>
             </section>
         </main>
 
-        <!-- Footer Section -->
+        <!--Footer Section-->
         <footer class="text-center mt-10 space-y-4">
             <div class="bg-white p-4 rounded-2xl shadow-md border-2 border-gray-200">
                  <h3 class="text-lg font-bold text-red-600 mb-2 flex items-center justify-center gap-2">
@@ -136,7 +136,7 @@
                     <a href="https://www.instagram.com/sabor_acaiteria/profilecard/?igsh=NjF2ZWMwNHNiNzI0" target="_blank" class="font-semibold text-red-600 hover:underline">@sabor_acaiteria</a>
                 </p>
             </div>
-            <!-- Action Buttons Container -->
+            <!--Action Buttons Container-->
             <div class="mt-6">
                  <a href="#" onclick="app.openAdminPanel(event)" class="inline-block bg-gray-200 text-orange-700 font-bold py-3 px-6 rounded-lg hover:bg-gray-300 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                     <i class="fas fa-user-shield mr-2"></i>Painel do Administrador
@@ -145,14 +145,14 @@
         </footer>
     </div>
 
-    <!-- WhatsApp Floating Button (Store) -->
+    <!--WhatsApp Floating Button (Store)-->
     <a id="whatsapp-link" href="#" target="_blank" class="fixed bottom-5 left-5 z-50">
         <button class="bg-green-500 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-green-600 transition-transform transform hover:scale-110">
             <i class="fab fa-whatsapp text-3xl"></i>
         </button>
     </a>
 
-    <!-- WhatsApp Floating Button (Emerson Taxista) -->
+    <!--WhatsApp Floating Button (Emerson Taxista)-->
     <a href="https://wa.me/5594981756146?text=Ol%C3%A1%20Emerson%2C%20estou%20precisando%20de%20transporte%2C%20voce%20esta%20dispon%C3%ADvel%3F" target="_blank" class="fixed top-1/2 -translate-y-1/2 left-5 z-50 group">
         <button class="bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-transform transform hover:scale-110">
             <i class="fas fa-car text-3xl"></i>
@@ -162,7 +162,7 @@
         </span>
     </a>
 
-    <!-- Cart Floating Button -->
+    <!--Cart Floating Button-->
     <div id="cart-button" class="fixed bottom-5 right-5 z-50 hidden">
         <button onclick="app.toggleCartModal()" class="bg-red-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-red-700 transition-transform transform hover:scale-110">
             <i class="fas fa-shopping-cart text-2xl"></i>
@@ -170,7 +170,7 @@
         </button>
     </div>
 
-    <!-- Combo Size Selection Modal -->
+    <!--Combo Size Selection Modal-->
     <div id="combo-size-modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] flex flex-col">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -178,7 +178,7 @@
                 <button onclick="app.closeComboSizeModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-2xl"></i></button>
             </div>
             <div id="combo-size-modal-body" class="p-6 space-y-4 overflow-y-auto modal-body">
-                <!-- Size options will be rendered here by JavaScript -->
+                <!--Size options will be rendered here by JavaScript-->
             </div>
             <div class="p-4 bg-gray-100 border-t border-gray-200 flex justify-end">
                 <button id="select-combo-size-btn" class="bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-all flex items-center gap-2" disabled>
@@ -188,7 +188,7 @@
         </div>
     </div>
 
-    <!-- Item Customization Modal -->
+    <!--Item Customization Modal-->
     <div id="item-modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -196,7 +196,7 @@
                 <button onclick="app.closeItemModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-2xl"></i></button>
             </div>
             <div id="modal-body" class="p-6 space-y-6 overflow-y-auto modal-body">
-                <!-- Topping options will be rendered here by JavaScript -->
+                <!--Topping options will be rendered here by JavaScript-->
             </div>
             <div class="p-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center">
                 <div>
@@ -210,7 +210,7 @@
         </div>
     </div>
 
-    <!-- Cart Modal -->
+    <!--Cart Modal-->
     <div id="cart-modal" class="modal fixed inset-0 bg-black bg-opacity-60 z-50 hidden items-center justify-center p-4">
          <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -228,19 +228,23 @@
                          <span>Taxa de Entrega</span>
                          <span id="cart-delivery-fee">R$ 0,00</span>
                      </div>
+                     <div id="cart-discount-row" class="flex justify-between text-green-600 font-bold hidden">
+                         <span>Desconto Aplicado</span>
+                         <span id="cart-discount-amount">- R$ 0,00</span>
+                     </div>
                 </div>
                 <div id="checkout-form" class="space-y-4 pt-6 border-t border-gray-200 hidden">
                     <h4 class="text-xl font-bold text-gray-900">Informações do Pedido</h4>
                     <div id="delivery-options">
                         <div class="flex flex-col sm:flex-row gap-4">
-                            <label id="delivery-option-delivery" class="flex-1 flex items-center p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has-[:checked]:bg-red-100">
+                            <label id="delivery-option-delivery" class="flex-1 flex items-center p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has:checked:bg-red-100">
                                 <input type="radio" name="delivery_option" value="delivery" class="hidden" checked>
                                 <div class="flex items-center">
                                     <span class="mr-3"><i class="fas fa-motorcycle text-xl text-red-500"></i></span>
                                     <div><span class="font-semibold text-gray-800 block radio-title">Delivery (Entrega)</span><span class="text-sm text-gray-500">20-60 min</span></div>
                                 </div>
                             </label>
-                            <label id="delivery-option-takeout" class="flex-1 flex items-center p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has-[:checked]:bg-red-100">
+                            <label id="delivery-option-takeout" class="flex-1 flex items-center p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has:checked:bg-red-100">
                                 <input type="radio" name="delivery_option" value="takeout" class="hidden">
                                 <div class="flex items-center">
                                     <span class="mr-3"><i class="fas fa-store text-xl text-red-500"></i></span>
@@ -288,6 +292,18 @@
                         <label for="observations" class="block text-sm font-medium text-gray-600">Observações</label>
                         <textarea id="observations" rows="3" class="mt-1 block w-full bg-gray-100 border-2 border-gray-300 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 p-3 text-base" placeholder="Ex: Troco para R$50, sem cebola, etc."></textarea>
                     </div>
+                     <div id="discount-section" class="pt-4 border-t border-gray-200">
+                        <h4 class="text-xl font-bold text-gray-900 mb-2">Seus Pontos de Desconto</h4>
+                        <div class="flex items-center mb-3">
+                            <span class="text-lg font-semibold text-gray-700 mr-2">Pontos Atuais:</span>
+                            <span id="current-discount-points" class="text-xl font-bold text-green-600">0</span>
+                        </div>
+                        <label class="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="apply-discount-checkbox" class="h-5 w-5 rounded border-gray-400 bg-gray-200 text-green-600 focus:ring-green-500">
+                            <span class="ml-2 text-gray-800 font-medium">Aplicar Desconto (se disponível)</span>
+                        </label>
+                        <p id="discount-message" class="text-sm text-gray-600 mt-2">Nenhum desconto disponível.</p>
+                    </div>
                 </div>
             </div>
             <div class="p-4 bg-gray-100 border-t border-gray-200 flex justify-between items-center">
@@ -302,7 +318,7 @@
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
+    <!--Confirmation Modal-->
     <div id="confirmation-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-50 hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-lg text-center p-8">
             <div id="confirmation-icon"><i class="fas fa-check-circle text-green-500 text-6xl mb-4"></i></div>
@@ -325,7 +341,7 @@
         </div>
     </div>
     
-    <!-- Alert Modal -->
+    <!--Alert Modal-->
     <div id="alert-modal" class="alert-modal fixed inset-0 bg-black bg-opacity-60 z-[60] hidden items-center justify-center p-4 opacity-0">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-sm text-center p-6 transform scale-95 transition-transform">
             <div id="alert-icon" class="mx-auto mb-4"></div>
@@ -335,7 +351,7 @@
         </div>
     </div>
 
-    <!-- Admin Panel Modal -->
+    <!--Admin Panel Modal-->
     <div id="admin-modal" class="modal fixed inset-0 bg-black bg-opacity-80 z-[70] hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -343,7 +359,7 @@
                 <button onclick="app.closeAdminModal()" class="text-gray-500 hover:text-red-500"><i class="fas fa-times text-2xl"></i></button>
             </div>
             <div id="admin-body" class="p-6 space-y-6 overflow-y-auto modal-body">
-                <!-- Admin panel content will be rendered here by JavaScript -->
+                <!--Admin panel content will be rendered here by JavaScript-->
             </div>
             <div class="p-4 bg-gray-100 border-t border-gray-200 flex flex-wrap justify-between items-center gap-4">
                 <div class="flex gap-4">
@@ -358,7 +374,7 @@
         </div>
     </div>
 
-    <!-- Admin Password Modal -->
+    <!--Admin Password Modal-->
     <div id="password-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-[80] hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-sm text-center p-6">
             <h3 class="text-xl font-bold text-orange-700 mb-4">Acesso Restrito</h3>
@@ -371,7 +387,7 @@
         </div>
     </div>
 
-    <!-- Confirmation Action Modal (Generic) -->
+    <!--Confirmation Action Modal (Generic)-->
     <div id="confirm-action-modal" class="modal fixed inset-0 bg-black bg-opacity-70 z-[80] hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-sm text-center p-6">
             <div id="confirm-action-icon" class="mx-auto mb-4"><i class="fas fa-exclamation-triangle text-yellow-500 text-5xl"></i></div>
@@ -384,7 +400,7 @@
         </div>
     </div>
 
-    <!-- Game Modal -->
+    <!--Game Modal-->
     <div id="game-modal" class="modal fixed inset-0 bg-black bg-opacity-80 z-[90] hidden items-center justify-center p-4">
         <div class="bg-white text-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
             <div class="p-4 border-b border-gray-200 flex justify-between items-center">
@@ -396,12 +412,16 @@
                 <div class="mt-4 text-center text-lg font-bold">
                     Score: <span id="game-score">0</span> | Misses: <span id="game-misses">0</span>
                 </div>
+                <div id="game-discount-message" class="text-green-600 text-xl font-bold mt-2 hidden"></div>
                 <div id="game-message" class="text-red-600 text-xl font-bold mt-2"></div>
                 <div class="mt-6 flex gap-4">
-                    <button id="game-start-btn" onclick="app.game.startGame()" class="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-all">
+                    <button id="game-start-btn" onclick="app.game.startGame(false)" class="bg-green-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-green-700 transition-all">
                         <i class="fas fa-play mr-2"></i> Iniciar Jogo
                     </button>
-                    <button id="game-restart-btn" onclick="app.game.startGame()" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all hidden">
+                    <button id="game-training-btn" onclick="app.game.startGame(true)" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all">
+                        <i class="fas fa-dumbbell mr-2"></i> Modo Treino
+                    </button>
+                    <button id="game-restart-btn" onclick="app.game.startGame(false)" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-700 transition-all hidden">
                         <i class="fas fa-redo mr-2"></i> Reiniciar
                     </button>
                 </div>
@@ -434,6 +454,8 @@
         products: [],
         toppings: {},
         selectedComboProductId: null, // New state to hold the ID of the combo being configured
+        currentDiscountPoints: 0, // New: Stores accumulated discount points
+        appliedDiscountPercentage: 0, // New: Stores the percentage discount currently applied
 
         // --- DEFAULT DATA (for initial load or reset) ---
         defaultAdminSettings: {
@@ -503,12 +525,24 @@
             }
         },
 
+        // Updated: Discount thresholds and percentages
+        discountTiers: [
+            { points: 35, percentage: 2.5 },
+            { points: 50, percentage: 3.0 },
+            { points: 65, percentage: 3.5 },
+            { points: 90, percentage: 4.5 },
+            { points: 110, percentage: 5.5 },
+            { points: 120, percentage: 6.5 },
+            { points: 150, percentage: 10.0 }
+        ],
+
         // --- LOCAL STORAGE KEYS ---
         CART_STORAGE_KEY: 'saborAcaiteriaCart',
         CUSTOMER_INFO_STORAGE_KEY: 'saborAcaiteriaCustomerInfo',
         ADMIN_SETTINGS_STORAGE_KEY: 'saborAcaiteriaAdminSettings',
         PRODUCTS_STORAGE_KEY: 'saborAcaiteriaProducts',
         TOPPINGS_STORAGE_KEY: 'saborAcaiteriaToppings',
+        DISCOUNT_POINTS_STORAGE_KEY: 'saborAcaiteriaDiscountPoints', // New: for discount points
 
         // --- DOM ELEMENT SELECTORS (cached for performance) ---
         elements: {
@@ -571,10 +605,18 @@
             gameScore: document.getElementById('game-score'),
             gameMisses: document.getElementById('game-misses'),
             gameMessage: document.getElementById('game-message'),
+            gameDiscountMessage: document.getElementById('game-discount-message'), // New
             gameStartBtn: document.getElementById('game-start-btn'),
+            gameTrainingBtn: document.getElementById('game-training-btn'), // New
             gameRestartBtn: document.getElementById('game-restart-btn'),
             moveLeftBtn: document.getElementById('move-left-btn'),
             moveRightBtn: document.getElementById('move-right-btn'),
+            // Discount elements in cart modal
+            currentDiscountPoints: document.getElementById('current-discount-points'),
+            applyDiscountCheckbox: document.getElementById('apply-discount-checkbox'),
+            discountMessage: document.getElementById('discount-message'),
+            cartDiscountRow: document.getElementById('cart-discount-row'),
+            cartDiscountAmount: document.getElementById('cart-discount-amount'),
         },
 
         // --- HELPER FUNCTIONS ---
@@ -611,6 +653,13 @@
                     if (radio) radio.checked = true;
                 }
             }
+        },
+        saveDiscountPoints() { // New: Save discount points
+            localStorage.setItem(app.DISCOUNT_POINTS_STORAGE_KEY, app.currentDiscountPoints.toString());
+        },
+        loadDiscountPoints() { // New: Load discount points
+            const savedPoints = localStorage.getItem(app.DISCOUNT_POINTS_STORAGE_KEY);
+            app.currentDiscountPoints = savedPoints ? parseInt(savedPoints) : 0;
         },
         loadLocalData() {
             const savedSettings = localStorage.getItem(app.ADMIN_SETTINGS_STORAGE_KEY);
@@ -752,7 +801,7 @@
                 const isComboWithSelectableSize = product.type === 'combo_selectable_size';
 
                 // Conditional classes for the product card
-                // Card is always visually enabled for browsing, but interactions are controlled by onclick
+                // Card is always visually enabled for Browse, but interactions are controlled by onclick
                 const cardClasses = isDisabled
                     ? "bg-gray-100 border border-gray-200 rounded-xl p-4 text-center transition-all cursor-not-allowed flex flex-col justify-between opacity-60"
                     : "bg-white border border-gray-200 rounded-xl p-4 text-center transition-all hover:shadow-lg hover:border-red-500 cursor-pointer flex flex-col justify-between";
@@ -849,11 +898,28 @@
                 deliveryFee = parseFloat(selectedOption.dataset.fee || 0);
             }
             
-            const finalTotal = subtotal + deliveryFee;
+            // Calculate discount based on current points and checkbox state
+            app.appliedDiscountPercentage = app.getApplicableDiscount();
+            let discountAmount = 0;
+            if (app.elements.applyDiscountCheckbox.checked && app.appliedDiscountPercentage > 0) {
+                discountAmount = (subtotal + deliveryFee) * (app.appliedDiscountPercentage / 100);
+            }
+
+            const finalTotal = subtotal + deliveryFee - discountAmount;
 
             app.elements.cartSubtotal.textContent = app.formatCurrency(subtotal);
             app.elements.cartDeliveryFee.textContent = app.formatCurrency(deliveryFee);
             app.elements.cartTotalEl.textContent = app.formatCurrency(finalTotal);
+
+            // Update discount display in cart summary
+            if (discountAmount > 0) {
+                app.elements.cartDiscountRow.classList.remove('hidden');
+                app.elements.cartDiscountAmount.textContent = `- ${app.formatCurrency(discountAmount)}`;
+            } else {
+                app.elements.cartDiscountRow.classList.add('hidden');
+            }
+
+            app.updateDiscountSection(); // Update discount points display and message
 
             // Disable finalize button if store is closed or cart is empty
             const finalizeBtn = document.querySelector('button[onclick="app.finalizeOrder()"]');
@@ -864,6 +930,40 @@
                 } else {
                     finalizeBtn.disabled = false;
                     finalizeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        },
+
+        // New: Calculates the maximum applicable discount based on current points
+        getApplicableDiscount() {
+            let maxPercentage = 0;
+            // Sort tiers in descending order to find the highest applicable discount
+            app.discountTiers.sort((a, b) => b.points - a.points).forEach(tier => {
+                if (app.currentDiscountPoints >= tier.points) {
+                    maxPercentage = tier.percentage;
+                    return; // Found the highest, no need to check lower tiers
+                }
+            });
+            return maxPercentage;
+        },
+
+        // New: Updates the discount section in the cart modal
+        updateDiscountSection() {
+            app.elements.currentDiscountPoints.textContent = app.currentDiscountPoints;
+            const applicableDiscount = app.getApplicableDiscount();
+
+            if (applicableDiscount > 0) {
+                app.elements.applyDiscountCheckbox.disabled = false;
+                app.elements.discountMessage.textContent = `Você tem ${app.currentDiscountPoints} pontos! Desconto de ${applicableDiscount.toFixed(1)}% disponível.`;
+            } else {
+                app.elements.applyDiscountCheckbox.checked = false; // Uncheck if no discount is available
+                app.elements.applyDiscountCheckbox.disabled = true;
+                // Find the next closest tier if current points are less than the lowest tier
+                const nextTier = app.discountTiers.find(tier => app.currentDiscountPoints < tier.points);
+                if (nextTier) {
+                    app.elements.discountMessage.textContent = `Acumule mais pontos para desbloquear descontos! Próximo: ${nextTier.points} pontos (${nextTier.percentage.toFixed(1)}% de desconto).`;
+                } else {
+                    app.elements.discountMessage.textContent = `Você tem ${app.currentDiscountPoints} pontos! Nenhum desconto adicional disponível no momento.`;
                 }
             }
         },
@@ -984,7 +1084,7 @@
 
         // --- COMBO SIZE SELECTION MODAL ---
         openComboSizeModal(productId) {
-            // Removed the store open check here to allow browsing and adding to cart
+            // Removed the store open check here to allow Browse and adding to cart
             app.selectedComboProductId = productId; // Store the combo ID
             const product = app.products.find(p => p.id.toString() === productId.toString());
             if (!product) return;
@@ -994,7 +1094,7 @@
 
             app.cupSizes.forEach(size => {
                 const sizeOptionHtml = `
-                    <label class="flex items-center space-x-3 p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has-[:checked]:bg-red-100">
+                    <label class="flex items-center space-x-3 p-3 border-2 border-gray-300 rounded-lg cursor-pointer has-[:checked]:border-red-500 has:checked:bg-red-100">
                         <input type="radio" name="combo_size" value="${size.name}" data-price="${size.price}" class="hidden">
                         <div class="flex items-center w-full">
                             <span class="mr-3 text-red-600 text-xl"><i class="fas fa-mug-hot"></i></span>
@@ -1009,6 +1109,7 @@
             });
 
             // Enable/disable continue button based on selection AND store status
+            app.elements.selectComboSizeBtn.disabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
             app.elements.comboSizeModalBody.querySelectorAll('input[name="combo_size"]').forEach(radio => {
                 radio.addEventListener('change', () => {
                     app.elements.selectComboSizeBtn.disabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
@@ -1066,7 +1167,7 @@
 
         // --- ITEM CUSTOMIZATION MODAL ---
         openItemModal(productId, selectedBasePrice, selectedSizeName = '') {
-            // Removed the store open check here to allow browsing and adding to cart
+            // Removed the store open check here to allow Browse and adding to cart
             const product = app.products.find(p => p.id.toString() === productId.toString());
             if (!product) return;
             
@@ -1339,9 +1440,21 @@
             });
 
             const subtotal = app.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const finalTotal = subtotal + deliveryFee;
+            let finalTotal = subtotal + deliveryFee;
+            let discountAmount = 0;
+
+            // Apply discount if checked and available
+            if (app.elements.applyDiscountCheckbox.checked && app.appliedDiscountPercentage > 0) {
+                discountAmount = finalTotal * (app.appliedDiscountPercentage / 100);
+                finalTotal -= discountAmount;
+                // Deduct points after successful application
+                app.currentDiscountPoints = 0; 
+                app.saveDiscountPoints();
+            }
+
             summary += `\n*Subtotal dos Itens: ${app.formatCurrency(subtotal)}*\n`;
             if (deliveryOption === 'delivery') summary += `*Taxa de Entrega: ${app.formatCurrency(deliveryFee)}*\n`;
+            if (discountAmount > 0) summary += `*Desconto Aplicado (${app.appliedDiscountPercentage.toFixed(1)}%): - ${app.formatCurrency(discountAmount)}*\n`;
             summary += `*TOTAL DO PEDIDO: ${app.formatCurrency(finalTotal)}*\n*Forma de Pagamento:* ${payment}\n`;
             if (obs) summary += `*Observações:* ${obs}\n`;
 
@@ -1684,6 +1797,7 @@
                     localStorage.removeItem(app.PRODUCTS_STORAGE_KEY);
                     localStorage.removeItem(app.TOPPINGS_STORAGE_KEY);
                     localStorage.removeItem(app.ADMIN_SETTINGS_STORAGE_KEY);
+                    localStorage.removeItem(app.DISCOUNT_POINTS_STORAGE_KEY); // Also remove discount points
                     app.closeAdminModal();
                     app.showAlert('Cardápio e configurações restaurados! A página será recarregada.', 'Sucesso', false);
                     setTimeout(() => window.location.reload(), 2500); // Reload page to ensure all defaults are loaded
@@ -1702,12 +1816,14 @@
             maxMisses: 5,
             gameOver: false,
             gameStarted: false,
+            isTrainingMode: false, // New: State for training mode
             animationFrameId: null,
             itemSpawnInterval: null,
             lastTouchX: null, // For mobile swipe
             baseItemSpeed: 1.5, // Initial base speed for falling items
             basePlayerSpeed: 10, // Initial base speed for player movement
             currentSpeedMultiplier: 1, // Multiplier for game speed
+            discountAwardedScores: [], // New: Keep track of scores where discount was awarded
 
             init() {
                 this.canvas = app.elements.gameCanvas;
@@ -1754,15 +1870,19 @@
                 this.fallingItems = [];
                 this.gameOver = false;
                 this.gameStarted = false;
+                this.isTrainingMode = false; // Reset training mode
                 this.currentSpeedMultiplier = 1; // Reset speed multiplier
                 this.player.speed = this.basePlayerSpeed; // Reset player speed
                 this.player.x = (this.canvas.width / 2) - (this.player.width / 2);
                 this.player.dx = 0;
+                this.discountAwardedScores = []; // Reset awarded scores
 
                 app.elements.gameScore.textContent = this.score;
                 app.elements.gameMisses.textContent = this.misses;
                 app.elements.gameMessage.textContent = '';
+                app.elements.gameDiscountMessage.classList.add('hidden'); // Hide discount message
                 app.elements.gameStartBtn.classList.remove('hidden');
+                app.elements.gameTrainingBtn.classList.remove('hidden'); // Show training button
                 app.elements.gameRestartBtn.classList.add('hidden');
 
                 if (this.animationFrameId) {
@@ -1774,13 +1894,24 @@
                 this.draw(); // Draw initial state
             },
 
-            startGame() {
+            startGame(isTraining) {
                 this.resetGame();
                 this.gameStarted = true;
+                this.isTrainingMode = isTraining; // Set training mode state
+
                 app.elements.gameStartBtn.classList.add('hidden');
+                app.elements.gameTrainingBtn.classList.add('hidden'); // Hide training button
                 app.elements.gameRestartBtn.classList.remove('hidden'); // Show restart button after starting
 
-                this.itemSpawnInterval = setInterval(() => this.spawnItem(), 1000); // Spawn item every 1 second
+                if (this.isTrainingMode) {
+                    app.elements.gameMessage.textContent = 'Modo Treino Ativo: Sem game over e mais lento!';
+                    this.currentSpeedMultiplier = 0.5; // Slower speed for training
+                    this.player.speed = this.basePlayerSpeed * 0.7; // Slightly slower player speed for training
+                } else {
+                    app.elements.gameMessage.textContent = '';
+                }
+
+                this.itemSpawnInterval = setInterval(() => this.spawnItem(), 1000 / this.currentSpeedMultiplier); // Spawn item every 1 second, adjusted by speed
                 this.gameLoop();
             },
 
@@ -1789,7 +1920,11 @@
                 this.gameStarted = false;
                 cancelAnimationFrame(this.animationFrameId);
                 clearInterval(this.itemSpawnInterval);
-                app.elements.gameMessage.textContent = `Fim de Jogo! Você pegou ${this.score} açaís!`;
+                if (!this.isTrainingMode) {
+                    app.elements.gameMessage.textContent = `Fim de Jogo! Você pegou ${this.score} açaís!`;
+                } else {
+                    app.elements.gameMessage.textContent = `Treino Concluído! Você pegou ${this.score} açaís.`;
+                }
                 app.elements.gameRestartBtn.classList.remove('hidden');
             },
 
@@ -1857,8 +1992,8 @@
                         this.score++;
                         app.elements.gameScore.textContent = this.score;
 
-                        // Check for speed increase every 20 points
-                        if (this.score > 0 && this.score % 20 === 0) {
+                        // Check for speed increase every 20 points (only in regular mode)
+                        if (!this.isTrainingMode && this.score > 0 && this.score % 20 === 0) {
                             this.currentSpeedMultiplier *= 1.15; // Increase by 15%
                             this.player.speed = this.basePlayerSpeed * this.currentSpeedMultiplier; // Update player speed
                             // Accelerate all currently falling items
@@ -1869,14 +2004,30 @@
                             setTimeout(() => app.elements.gameMessage.textContent = '', 1500); // Clear message after 1.5s
                         }
 
+                        // Check for discount points (only in regular mode)
+                        if (!this.isTrainingMode) {
+                            app.discountTiers.forEach(tier => {
+                                if (this.score === tier.points && !this.discountAwardedScores.includes(tier.points)) {
+                                    app.currentDiscountPoints = tier.points; // Update current points to the tier reached
+                                    app.saveDiscountPoints(); // Save points
+                                    app.elements.gameDiscountMessage.textContent = `PARABÉNS! Você ganhou ${tier.points} pontos de desconto de ${tier.percentage}%!`;
+                                    app.elements.gameDiscountMessage.classList.remove('hidden');
+                                    setTimeout(() => app.elements.gameDiscountMessage.classList.add('hidden'), 3000); // Hide after 3 seconds
+                                    this.discountAwardedScores.push(tier.points); // Mark as awarded
+                                }
+                            });
+                        }
+
                         this.fallingItems.splice(index, 1); // Remove caught item
                     } else if (item.y + item.size > this.canvas.height) {
-                        this.misses++;
-                        app.elements.gameMisses.textContent = this.misses;
-                        this.fallingItems.splice(index, 1); // Remove missed item
-                        if (this.misses >= this.maxMisses) {
-                            this.endGame();
+                        if (!this.isTrainingMode) { // Only count misses in regular mode
+                            this.misses++;
+                            app.elements.gameMisses.textContent = this.misses;
+                            if (this.misses >= this.maxMisses) {
+                                this.endGame();
+                            }
                         }
+                        this.fallingItems.splice(index, 1); // Remove missed item
                     }
                 });
             },
@@ -1975,6 +2126,7 @@
             app.loadLocalData();
             app.loadCart();
             app.loadCustomerInfo();
+            app.loadDiscountPoints(); // New: Load discount points on app init
             
             app.elements.storeAddressDisplay.textContent = app.adminSettings.address;
             app.elements.whatsappLink.href = `https://wa.me/${app.adminSettings.whatsappNumber}`;
@@ -1984,6 +2136,7 @@
             app.renderCart();
             app.updateCartIcon();
             app.checkStoreStatus(); // Initial check and setup
+            app.updateDiscountSection(); // Initialize discount section display
 
             // Event listeners
             // Modified to explicitly close item modal after adding to cart
@@ -2008,6 +2161,10 @@
                     app.toggleDeliveryFields();
                     app.saveCustomerInfo();
                 });
+            });
+            // New: Event listener for discount checkbox
+            app.elements.applyDiscountCheckbox.addEventListener('change', () => {
+                app.renderCart(); // Re-render cart to apply/remove discount
             });
             
             app.elements.adminPasswordInput.addEventListener('keypress', function(event) {
