@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tone.js para sons no jogo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <style>
         /* Define a fonte base para todo o corpo do documento */
         body {
@@ -308,7 +310,6 @@
                      <div id="discount-section" class="pt-4 border-t border-gray-200">
                         <h4 class="text-xl font-bold text-gray-900 mb-2">Seus Pontos de Desconto</h4>
                         <div class="flex items-center mb-3">
-                            <span class="text-lg font-semibold text-gray-700 mr-2">Pontos Atuais:</span>
                             <span id="current-discount-points" class="text-xl font-bold text-green-600">0</span>
                         </div>
                         <label class="inline-flex items-center cursor-pointer">
@@ -1828,6 +1829,10 @@
             basePlayerSpeed: 10,
             currentSpeedMultiplier: 1,
             discountAwardedScores: [],
+            // Adicionado: players de som
+            collectSound: null,
+            missSound: null,
+            discountSound: null, // Novo som para o desconto
 
             // Inicializa o jogo e o canvas.
             init() {
@@ -1847,6 +1852,70 @@
 
                 this.resetGame();
                 this.addEventListeners();
+                this.initSounds(); // Inicializa os sons
+            },
+
+            // Inicializa os players de som usando Tone.js
+            initSounds() {
+                // Cria um sintetizador simples para o som de coleta
+                this.collectSound = new Tone.Synth({
+                    oscillator: {
+                        type: "sine"
+                    },
+                    envelope: {
+                        attack: 0.005,
+                        decay: 0.1,
+                        sustain: 0.05,
+                        release: 0.1
+                    }
+                }).toDestination();
+
+                // Cria um sintetizador simples para o som de erro
+                this.missSound = new Tone.Synth({
+                    oscillator: {
+                        type: "sawtooth"
+                    },
+                    envelope: {
+                        attack: 0.01,
+                        decay: 0.2,
+                        sustain: 0.1,
+                        release: 0.2
+                    }
+                }).toDestination();
+
+                // Novo sintetizador para o som de desconto
+                this.discountSound = new Tone.Synth({
+                    oscillator: {
+                        type: "triangle"
+                    },
+                    envelope: {
+                        attack: 0.01,
+                        decay: 0.3,
+                        sustain: 0.1,
+                        release: 0.5
+                    }
+                }).toDestination();
+            },
+
+            // Reproduz o som de coleta
+            playCollectSound() {
+                if (this.collectSound) {
+                    this.collectSound.triggerAttackRelease("C5", "8n"); // Nota C5 por uma oitava
+                }
+            },
+
+            // Reproduz o som de erro
+            playMissSound() {
+                if (this.missSound) {
+                    this.missSound.triggerAttackRelease("C3", "8n"); // Nota C3 por uma oitava
+                }
+            },
+
+            // Reproduz o som de desconto
+            playDiscountSound() {
+                if (this.discountSound) {
+                    this.discountSound.triggerAttackRelease("G5", "4n"); // Nota G5 por uma quarta
+                }
             },
 
             // Redimensiona o canvas para ser responsivo e mantém a proporção.
@@ -1881,7 +1950,8 @@
                 app.elements.gameScore.textContent = this.score;
                 app.elements.gameMisses.textContent = this.misses;
                 app.elements.gameMessage.textContent = '';
-                app.elements.gameDiscountMessage.classList.add('hidden');
+                // A mensagem de desconto não deve sumir ao resetar o jogo, apenas ser ocultada se não houver desconto.
+                app.elements.gameDiscountMessage.classList.add('hidden'); 
                 app.elements.gameStartBtn.classList.remove('hidden');
                 app.elements.gameTrainingBtn.classList.remove('hidden');
                 app.elements.gameRestartBtn.classList.add('hidden');
@@ -1897,6 +1967,11 @@
 
             // Inicia o jogo, com opção de modo treino.
             startGame(isTraining) {
+                // Ativa o áudio no primeiro clique do usuário para contornar políticas de autoplay
+                if (Tone.context.state !== 'running') {
+                    Tone.start();
+                }
+
                 this.resetGame();
                 this.gameStarted = true;
                 this.isTrainingMode = isTraining;
@@ -1994,6 +2069,7 @@
                         item.x + item.size > this.player.x) {
                         this.score++;
                         app.elements.gameScore.textContent = this.score;
+                        this.playCollectSound(); // Toca o som de coleta
 
                         // Aumenta a velocidade a cada 20 pontos (apenas no modo normal)
                         if (!this.isTrainingMode && this.score > 0 && this.score % 20 === 0) {
@@ -2002,8 +2078,6 @@
                             this.fallingItems.forEach(fallingItem => {
                                 fallingItem.speed *= 1.15;
                             });
-                            // Removed: app.elements.gameMessage.textContent = `Velocidade Aumentada! (x${this.currentSpeedMultiplier.toFixed(2)})`;
-                            // Removed: setTimeout(() => app.elements.gameMessage.textContent = '', 1500);
                         }
 
                         // Verifica e concede pontos de desconto (apenas no modo normal)
@@ -2014,7 +2088,7 @@
                                     app.saveDiscountPoints();
                                     app.elements.gameDiscountMessage.textContent = `PARABÉNS! Você ganhou ${tier.points} pontos de desconto de ${tier.percentage}%!`;
                                     app.elements.gameDiscountMessage.classList.remove('hidden');
-                                    // Removed: setTimeout(() => app.elements.gameDiscountMessage.classList.add('hidden'), 3000); // This line makes the message disappear
+                                    this.playDiscountSound(); // Toca o som de desconto
                                     this.discountAwardedScores.push(tier.points);
                                 }
                             });
@@ -2025,6 +2099,7 @@
                         if (!this.isTrainingMode) { // Conta erros apenas no modo normal
                             this.misses++;
                             app.elements.gameMisses.textContent = this.misses;
+                            this.playMissSound(); // Toca o som de erro
                             if (this.misses >= this.maxMisses) {
                                 this.endGame();
                             }
