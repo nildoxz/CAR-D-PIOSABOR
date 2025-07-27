@@ -112,6 +112,18 @@
         </div>
     </header>
 
+    <!-- Seção do Player de Rádio Online -->
+    <div class="bg-white p-4 text-center shadow-md border-b border-gray-200">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">Sintonize na Correio FM Canaã dos Carajás!</h3>
+        <audio controls class="w-full max-w-md mx-auto rounded-lg shadow-md">
+            <source src="https://sws.onradio.biz/9664/stream" type="audio/mpeg">
+            Seu navegador não suporta o elemento de áudio.
+        </audio>
+        <p class="text-xs text-gray-500 mt-2">
+            <i class="fas fa-info-circle mr-1"></i> A reprodução pode não iniciar automaticamente em alguns navegadores.
+        </p>
+    </div>
+
     <!-- Seção do Banner do Jogo -->
     <div class="p-4 text-center shadow-md instagram-gradient">
         <a href="#" onclick="app.game.openGameModal(event)" class="inline-block bg-white text-pink-600 font-bold py-3 px-8 rounded-full hover:bg-pink-100 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg">
@@ -818,42 +830,42 @@
         renderProducts() {
             app.elements.productList.innerHTML = '';
             app.products.forEach(product => {
-                const isDisabled = product.disabled;
-                const isComboWithSelectableSize = product.type === 'combo_selectable_size';
+                const isPermanentlyDisabled = product.disabled; // Esta é a propriedade 'disabled' dos dados do produto
 
-                const cardClasses = isDisabled
+                // O card deve ser sempre clicável se não estiver permanentemente desabilitado
+                let cardClickHandler = '';
+                if (!isPermanentlyDisabled) {
+                    if (product.type === 'combo_selectable_size') {
+                        cardClickHandler = `onclick="app.openComboSizeModal('${product.id}')"`;
+                    } else {
+                        cardClickHandler = `onclick="app.openItemModal('${product.id}', ${product.price}, '')"`;
+                    }
+                }
+
+                const cardClasses = isPermanentlyDisabled
                     ? "bg-gray-100 border border-gray-200 rounded-xl p-4 text-center transition-all cursor-not-allowed flex flex-col justify-between opacity-60"
                     : "bg-white border border-gray-200 rounded-xl p-4 text-center transition-all hover:shadow-lg hover:border-pink-500 cursor-pointer flex flex-col justify-between";
                 
-                const buttonClasses = isDisabled
+                const buttonText = isPermanentlyDisabled ? "Indisponível" : "Montar"; // Sempre "Montar" se não estiver permanentemente desabilitado
+                
+                const buttonClasses = isPermanentlyDisabled
                     ? "mt-4 bg-gray-300 text-gray-600 font-semibold py-2 px-4 rounded-lg cursor-not-allowed w-full"
                     : "mt-4 text-white font-semibold py-2 px-4 rounded-lg w-full instagram-gradient instagram-gradient-hover";
                 
-                const buttonText = isDisabled ? "Em Breve" : "Montar";
-                
-                let onclickHandler;
-                if (isDisabled) {
-                    onclickHandler = "";
-                } else if (isComboWithSelectableSize) {
-                    onclickHandler = `onclick="app.openComboSizeModal('${product.id}')"`;
-                } else {
-                    onclickHandler = `onclick="app.openItemModal('${product.id}', ${product.price}, '')"`;
-                }
-                
-                const nameColor = isDisabled ? "text-gray-600" : "text-gray-900";
-                const priceColor = isDisabled ? "text-gray-500" : "text-pink-600";
-                const descriptionColor = isDisabled ? "text-gray-500" : "text-gray-600";
+                const nameColor = isPermanentlyDisabled ? "text-gray-600" : "text-gray-900";
+                const priceColor = isPermanentlyDisabled ? "text-gray-500" : "text-pink-600";
+                const descriptionColor = isPermanentlyDisabled ? "text-gray-500" : "text-gray-600";
 
                 const priceDisplay = product.type === 'base_acai' ? `<p class="text-2xl font-semibold ${priceColor} mt-2">${app.formatCurrency(product.price)}</p>` : `<p class="text-xl font-semibold ${priceColor} mt-2">A partir de ${app.formatCurrency(app.cupSizes[0].price)}</p>`;
 
                 const productCard = `
-                    <div class="${cardClasses}" ${onclickHandler}>
+                    <div class="${cardClasses}" ${cardClickHandler}>
                         <div>
                             <h3 class="font-bold text-xl ${nameColor}">${product.name}</h3>
                             ${product.description ? `<p class="text-sm ${descriptionColor} mt-1">${product.description}</p>` : ''}
                             ${priceDisplay}
                         </div>
-                        <button class="${buttonClasses}" ${isDisabled ? 'disabled' : ''}>${buttonText}</button>
+                        <button class="${buttonClasses}" ${isPermanentlyDisabled ? 'disabled' : ''}>${buttonText}</button>
                     </div>
                 `;
                 app.elements.productList.innerHTML += productCard;
@@ -1117,23 +1129,23 @@
                 app.elements.comboSizeModalBody.innerHTML += sizeOptionHtml;
             });
 
-            // Habilita/desabilita o botão de continuar com base na seleção e status da loja
-            app.elements.selectComboSizeBtn.disabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
+            // Habilita/desabilita o botão de continuar com base na seleção E no status da loja
+            const isButtonDisabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
+            app.elements.selectComboSizeBtn.disabled = isButtonDisabled;
+            app.elements.selectComboSizeBtn.classList.toggle('opacity-50', isButtonDisabled);
+            app.elements.selectComboSizeBtn.classList.toggle('cursor-not-allowed', isButtonDisabled);
+            app.elements.selectComboSizeBtn.innerHTML = isButtonDisabled && !app.isStoreOpen ? 'Loja Fechada' : '<i class="fas fa-arrow-right"></i> Continuar';
+
+
             app.elements.comboSizeModalBody.querySelectorAll('input[name="combo_size"]').forEach(radio => {
                 radio.addEventListener('change', () => {
-                    app.elements.selectComboSizeBtn.disabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
+                    const isButtonDisabled = !document.querySelector('input[name="combo_size"]:checked') || !app.isStoreOpen;
+                    app.elements.selectComboSizeBtn.disabled = isButtonDisabled;
+                    app.elements.selectComboSizeBtn.classList.toggle('opacity-50', isButtonDisabled);
+                    app.elements.selectComboSizeBtn.classList.toggle('cursor-not-allowed', isButtonDisabled);
+                    app.elements.selectComboSizeBtn.innerHTML = isButtonDisabled && !app.isStoreOpen ? 'Loja Fechada' : '<i class="fas fa-arrow-right"></i> Continuar';
                 });
             });
-
-            // Define o estado inicial do botão de continuar com base no status da loja
-            app.elements.selectComboSizeBtn.disabled = !app.isStoreOpen;
-            if (!app.isStoreOpen) {
-                app.elements.selectComboSizeBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                app.elements.selectComboSizeBtn.textContent = 'Loja Fechada';
-            } else {
-                app.elements.selectComboSizeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                app.elements.selectComboSizeBtn.innerHTML = '<i class="fas fa-arrow-right"></i> Continuar';
-            }
 
             app.elements.selectComboSizeBtn.onclick = () => {
                 if (!app.isStoreOpen) {
@@ -1230,6 +1242,7 @@
             app.updateModalItemTotal();
             app.openModal(app.elements.itemModal);
 
+            // O botão 'Adicionar ao Carrinho' deve ser desabilitado se a loja estiver fechada
             if (!app.isStoreOpen) {
                 app.elements.addToCartBtn.disabled = true;
                 app.elements.addToCartBtn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -1304,6 +1317,12 @@
         // --- LÓGICA DO CARRINHO ---
         // Adiciona o item atual ao carrinho.
         addToCart() {
+            // Verifica se a loja está aberta antes de adicionar ao carrinho
+            if (!app.isStoreOpen) {
+                app.showAlert('A loja está fechada e não é possível adicionar itens ao carrinho agora.', 'Loja Fechada', true);
+                return;
+            }
+
             const existingItemIndex = app.cart.findIndex(item => {
                 if (item.id !== app.currentItem.id || item.type !== app.currentItem.type) return false;
                 if (item.type === 'combo_selectable_size' && item.selectedSize !== app.currentItem.selectedSize) return false;
@@ -1649,7 +1668,7 @@
                 (category.items || []).forEach((item, index) => {
                     toppingsHTML += `
                         <div class="flex items-center gap-3 p-2 bg-gray-200 rounded-md admin-item" data-type="topping" data-category="${key}">
-                            <input type="text" value="${item.name}" class="admin-name flex-grow bg-gray-300 p-2 rounded-md border border-gray-400" placeholder="Nome do Complemento">
+                            <input type="text" value="${item.name}" class="admin-name flex-grow bg-gray-300 p-2 rounded-md border border-gray-400">
                             <label class="flex items-center gap-2 text-sm cursor-pointer whitespace-nowrap"><input type="checkbox" class="admin-disabled h-5 w-5 text-pink-600"> Bloquear</label>
                             <button onclick="app.removeAdminItem(this)" class="text-pink-500 hover:text-pink-400"><i class="fas fa-trash-alt"></i></button>
                         </div>`;
@@ -2227,12 +2246,13 @@
 
             // Listeners de eventos
             app.elements.addToCartBtn.addEventListener('click', () => {
-                if (!app.isStoreOpen) {
-                    app.showAlert('A loja está fechada e não é possível adicionar itens ao carrinho agora.', 'Loja Fechada', true);
-                    return;
-                }
+                // A verificação de loja aberta já é feita dentro de app.addToCart()
                 app.addToCart();
-                app.closeItemModal(); 
+                // Se o item foi adicionado (ou seja, a loja estava aberta), o modal é fechado.
+                // Caso contrário, o alerta será exibido e o modal permanecerá aberto.
+                if (app.isStoreOpen) {
+                    app.closeItemModal(); 
+                }
             });
 
             app.elements.customerNameInput.addEventListener('input', app.saveCustomerInfo);
